@@ -261,6 +261,55 @@
   @keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:none} }
   hr.sep { border: none; border-top: 1px solid rgba(255,255,255,0.06); margin: 1.4rem 0; }
 
+  /* DATA TABS */
+  .data-tabs { display:flex; gap:.5rem; margin-bottom:1.4rem; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:.8rem; }
+  .data-tab { padding:.4rem 1.1rem; border-radius:8px; border:1px solid rgba(255,255,255,0.14); background:transparent; color:var(--eq-gray); font-family:var(--font-body); font-size:.84rem; font-weight:500; cursor:pointer; transition:all .18s; }
+  .data-tab.active { background:var(--eq-orange); border-color:var(--eq-orange); color:#fff; }
+  .data-tab-panel { display:none; }
+  .data-tab-panel.active { display:block; }
+
+  /* IMPORT PANEL */
+  .import-wrap { display:grid; grid-template-columns:1fr 1fr; gap:1.4rem; }
+  @media(max-width:900px){ .import-wrap { grid-template-columns:1fr; } }
+  .import-box { background:rgba(255,255,255,0.04); border:1px solid var(--card-border); border-radius:14px; padding:1.3rem; }
+  .import-box h3 { font-family:var(--font-head); font-size:.9rem; font-weight:700; margin-bottom:.3rem; }
+  .import-box p  { font-size:.78rem; color:var(--eq-gray); margin-bottom:.9rem; line-height:1.55; }
+  .import-instructions { background:rgba(40,86,212,0.12); border:1px solid rgba(40,86,212,0.25); border-radius:10px; padding:.9rem 1rem; margin-bottom:1rem; font-size:.78rem; color:var(--eq-gray); line-height:1.7; }
+  .import-instructions strong { color:var(--eq-white); }
+  .import-instructions code { background:rgba(255,255,255,0.1); border-radius:4px; padding:.1rem .4rem; font-size:.75rem; color:var(--eq-orange); }
+  textarea.paste-area { width:100%; height:160px; resize:vertical; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); border-radius:10px; color:var(--eq-white); font-family:monospace; font-size:.78rem; padding:.75rem .9rem; outline:none; transition:border .2s; line-height:1.55; }
+  textarea.paste-area:focus { border-color:var(--eq-orange); }
+  textarea.paste-area::placeholder { color:rgba(200,212,240,0.35); }
+  .import-actions { display:flex; gap:.6rem; margin-top:.8rem; flex-wrap:wrap; }
+  .btn-import { padding:.5rem 1.2rem; border-radius:9px; border:none; font-family:var(--font-head); font-size:.85rem; font-weight:700; cursor:pointer; transition:all .15s; }
+  .btn-import.primary { background:linear-gradient(135deg,var(--eq-orange),#c45c0a); color:#fff; box-shadow:0 3px 14px rgba(244,121,32,0.35); }
+  .btn-import.primary:hover { transform:translateY(-1px); box-shadow:0 5px 18px rgba(244,121,32,0.5); }
+  .btn-import.ghost  { background:transparent; border:1px solid rgba(255,255,255,0.18); color:var(--eq-gray); }
+  .btn-import.ghost:hover  { color:var(--eq-white); border-color:rgba(255,255,255,0.35); }
+  .btn-import.green  { background:linear-gradient(135deg,#16a34a,#14532d); color:#fff; box-shadow:0 3px 12px rgba(34,197,94,0.3); }
+  .btn-import.green:hover { transform:translateY(-1px); }
+  .preview-wrap { margin-top:1rem; }
+  .preview-wrap h4 { font-family:var(--font-head); font-size:.82rem; font-weight:700; color:var(--eq-gray); text-transform:uppercase; letter-spacing:.07em; margin-bottom:.6rem; }
+  .preview-scroll { overflow-x:auto; border-radius:10px; border:1px solid var(--card-border); max-height:280px; overflow-y:auto; }
+  table.preview-table { width:100%; border-collapse:collapse; font-size:.76rem; }
+  table.preview-table thead tr { background:rgba(40,86,212,0.2); position:sticky; top:0; z-index:2; }
+  table.preview-table th { padding:.45rem .6rem; text-align:center; font-family:var(--font-head); font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:var(--eq-gray); white-space:nowrap; }
+  table.preview-table th:first-child,table.preview-table th:nth-child(2) { text-align:left; }
+  table.preview-table td { padding:.35rem .6rem; border-top:1px solid rgba(255,255,255,0.04); text-align:center; white-space:nowrap; }
+  table.preview-table td:first-child { text-align:left; font-weight:600; color:var(--eq-orange); }
+  table.preview-table tr.prev-plan td.ttype { color:#f47920; font-size:.7rem; font-weight:700; }
+  table.preview-table tr.prev-real td.ttype { color:#60a5fa; font-size:.7rem; font-weight:700; }
+  table.preview-table td.val-ok  { color:#86efac; }
+  table.preview-table td.val-err { color:#fca5a5; font-style:italic; }
+  .import-feedback { margin-top:.8rem; padding:.55rem .9rem; border-radius:8px; font-size:.8rem; display:none; }
+  .import-feedback.success { background:var(--green-bg); color:var(--green); border:1px solid rgba(34,197,94,0.25); }
+  .import-feedback.error   { background:var(--red-bg);   color:var(--red);   border:1px solid rgba(239,68,68,0.25); }
+  .template-pkg-list { display:flex; flex-direction:column; gap:.35rem; margin-bottom:.9rem; }
+  .template-pkg-item { display:flex; align-items:center; gap:.7rem; font-size:.78rem; }
+  .template-pkg-item code { background:rgba(255,255,255,0.08); border-radius:5px; padding:.1rem .5rem; font-size:.74rem; color:var(--eq-orange); min-width:48px; text-align:center; }
+  .template-pkg-item span { color:var(--eq-gray); }
+  .csv-preview-box { background:rgba(0,0,0,0.25); border-radius:8px; padding:.7rem .9rem; font-family:monospace; font-size:.72rem; color:#86efac; line-height:1.7; overflow-x:auto; white-space:pre; margin-bottom:.8rem; border:1px solid rgba(34,197,94,0.15); }
+
   @media(max-width:640px){
     .topbar-eq { display:none; }
     .section-wrap, .data-wrap { padding: 1rem; }
@@ -366,23 +415,84 @@
 <!-- DATA ENTRY -->
 <div id="screen-data">
   <div class="data-wrap">
-    <h2>✏️ Inserção de Dados — Planejado &amp; Realizado</h2>
-    <p>Preencha os valores mensais por pacote. As alterações atualizam o Panorama em tempo real.</p>
-    <div class="table-outer">
-      <table class="dt">
-        <thead>
-          <tr>
-            <th class="hpkg">Pacote</th>
-            <th class="htype">Tipo</th>
-            <th>Jan</th><th>Fev</th><th>Mar</th><th>Abr</th>
-            <th>Mai</th><th>Jun</th><th>Jul</th><th>Ago</th>
-            <th>Set</th><th>Out</th><th>Nov</th><th>Dez</th>
-          </tr>
-        </thead>
-        <tbody id="data-tbody"></tbody>
-      </table>
+    <h2>✏️ Inserção de Dados</h2>
+    <p>Preencha os valores manualmente campo a campo, ou importe tudo de uma vez colando de uma planilha.</p>
+
+    <!-- TABS -->
+    <div class="data-tabs">
+      <button class="data-tab active" id="tab-manual" onclick="switchDataTab('manual')">📝 Preenchimento Manual</button>
+      <button class="data-tab"        id="tab-import" onclick="switchDataTab('import')">⚡ Importação Massiva</button>
+    </div>
+
+    <!-- TAB: MANUAL -->
+    <div class="data-tab-panel active" id="panel-manual">
+      <div class="table-outer">
+        <table class="dt">
+          <thead>
+            <tr>
+              <th class="hpkg">Pacote</th>
+              <th class="htype">Tipo</th>
+              <th>Jan</th><th>Fev</th><th>Mar</th><th>Abr</th>
+              <th>Mai</th><th>Jun</th><th>Jul</th><th>Ago</th>
+              <th>Set</th><th>Out</th><th>Nov</th><th>Dez</th>
+            </tr>
+          </thead>
+          <tbody id="data-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB: IMPORT -->
+    <div class="data-tab-panel" id="panel-import">
+      <div class="import-wrap">
+
+        <!-- LEFT: PASTE -->
+        <div class="import-box">
+          <h3>📋 Colar dados da planilha</h3>
+          <p>Copie as células diretamente do Excel ou Google Sheets e cole abaixo. O sistema detecta automaticamente.</p>
+
+          <div class="import-instructions">
+            <strong>Formato esperado:</strong> cada linha deve ter:<br>
+            <code>CódigoPacote</code> &nbsp;→&nbsp; <code>Tipo</code> &nbsp;→&nbsp; 12 valores mensais<br><br>
+            <strong>Tipo:</strong> use <code>P</code> ou <code>Planejado</code> para planejado, <code>R</code> ou <code>Realizado</code> para realizado.<br>
+            <strong>Separadores aceitos:</strong> tabulação (padrão do Excel), ponto e vírgula ou vírgula.<br>
+            <strong>Valores:</strong> podem usar vírgula ou ponto como decimal. Ex: <code>1234,56</code> ou <code>1234.56</code>
+          </div>
+
+          <textarea class="paste-area" id="paste-area" placeholder="Cole aqui os dados copiados do Excel...&#10;&#10;Exemplo:&#10;07	Planejado	100000	110000	95000	...&#10;07	Realizado	98000	105000	92000	...&#10;08	P	50000	52000	48000	..."></textarea>
+
+          <div class="import-actions">
+            <button class="btn-import primary" onclick="parseImport()">🔍 Pré-visualizar</button>
+            <button class="btn-import ghost"   onclick="document.getElementById('paste-area').value=''">Limpar</button>
+          </div>
+          <div class="import-feedback" id="import-feedback"></div>
+        </div>
+
+        <!-- RIGHT: TEMPLATE + PREVIEW -->
+        <div class="import-box">
+          <h3>📌 Referência dos Pacotes</h3>
+          <p>Use os códigos abaixo na primeira coluna dos dados que você vai colar.</p>
+
+          <div class="template-pkg-list" id="template-pkg-list"></div>
+
+          <button class="btn-import ghost" style="width:100%;margin-bottom:1.2rem" onclick="downloadTemplate()">⬇️ Baixar template CSV</button>
+
+          <div class="preview-wrap" id="preview-wrap" style="display:none">
+            <h4>Pré-visualização — <span id="preview-count"></span></h4>
+            <div class="preview-scroll">
+              <table class="preview-table" id="preview-table"></table>
+            </div>
+            <div class="import-actions" style="margin-top:1rem">
+              <button class="btn-import green" onclick="confirmImport()">✅ Confirmar e Importar</button>
+              <button class="btn-import ghost"  onclick="cancelPreview()">Cancelar</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
+
   <div class="save-bar">
     <div class="save-info">Dados salvos localmente no navegador e persistem entre sessões.</div>
     <div class="saved-toast" id="saved-toast">✓ Salvo!</div>
@@ -823,6 +933,15 @@ function renderChart() {
   });
 }
 
+/* ── DATA TABS ── */
+function switchDataTab(name) {
+  ['manual','import'].forEach(n => {
+    document.getElementById('tab-'+n).classList.toggle('active', n===name);
+    document.getElementById('panel-'+n).classList.toggle('active', n===name);
+  });
+  if (name==='import') buildTemplatePkgList();
+}
+
 /* ── DATA TABLE ── */
 function renderDataTable() {
   const tbody = document.getElementById('data-tbody');
@@ -863,6 +982,194 @@ function renderDataTable() {
     sep.innerHTML='<td colspan="14"></td>';
     tbody.appendChild(sep);
   });
+}
+
+/* ── IMPORT MASSIVA ── */
+let parsedImportData = null; // holds preview result
+
+function buildTemplatePkgList() {
+  const el = document.getElementById('template-pkg-list');
+  el.innerHTML = '';
+  PACKAGES.forEach(p => {
+    const div = document.createElement('div');
+    div.className = 'template-pkg-item';
+    div.innerHTML = `<code>${p.id}</code><span>${p.name}${p.card?' · CARD':''}${p.hib?' · RECEITA':''}</span>`;
+    el.appendChild(div);
+  });
+}
+
+function parseImport() {
+  const raw = document.getElementById('paste-area').value.trim();
+  const fb  = document.getElementById('import-feedback');
+  fb.style.display = 'none';
+  document.getElementById('preview-wrap').style.display = 'none';
+  parsedImportData = null;
+
+  if (!raw) {
+    showFeedback('error', 'Cole os dados antes de pré-visualizar.');
+    return;
+  }
+
+  const lines = raw.split(/\r?\n/).filter(l => l.trim());
+  const result = []; // { pkgId, type, values[12], errors[] }
+  const parseErrors = [];
+
+  lines.forEach((line, li) => {
+    // detect separator: tab preferred, then semicolon, then comma
+    let sep = '\t';
+    if (!line.includes('\t')) {
+      sep = line.includes(';') ? ';' : ',';
+    }
+    const cols = line.split(sep).map(c => c.trim());
+    if (cols.length < 3) {
+      parseErrors.push(`Linha ${li+1}: colunas insuficientes (${cols.length}).`);
+      return;
+    }
+
+    // col 0: package id — strip "Pac", "Pacote", spaces
+    const rawId = cols[0].replace(/pac(ote)?\.?\s*/i,'').replace(/\D/g,'').padStart(2,'0');
+    const pkg = PACKAGES.find(p => p.id === rawId);
+    if (!pkg) {
+      parseErrors.push(`Linha ${li+1}: pacote "${cols[0]}" não reconhecido.`);
+      return;
+    }
+
+    // col 1: type
+    const rawType = cols[1].toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    let type;
+    if (/^p(lan)?/.test(rawType))    type = 'plan';
+    else if (/^r(eal)?/.test(rawType)) type = 'real';
+    else {
+      parseErrors.push(`Linha ${li+1}: tipo "${cols[1]}" inválido. Use "Planejado" ou "Realizado".`);
+      return;
+    }
+
+    // cols 2..13: values (accept comma or dot decimal, ignore R$, spaces, dots as thousands)
+    const values = [];
+    const errs   = [];
+    for (let m = 0; m < 12; m++) {
+      const raw = (cols[2+m] ?? '').replace(/R\$\s*/g,'').replace(/\s/g,'');
+      if (raw === '' || raw === '-' || raw.toLowerCase() === 'null') {
+        values.push(null);
+      } else {
+        // handle Brazilian number format: 1.234.567,89 → 1234567.89
+        let norm = raw;
+        // if contains comma AND dot: comma is decimal separator (BR format)
+        if (norm.includes(',') && norm.includes('.')) {
+          norm = norm.replace(/\./g,'').replace(',','.');
+        } else if (norm.includes(',')) {
+          norm = norm.replace(',','.');
+        }
+        const n = parseFloat(norm);
+        if (isNaN(n)) { errs.push(m); values.push(null); }
+        else values.push(n);
+      }
+    }
+    result.push({ pkgId: pkg.id, pkgName: pkg.name, type, values, errs });
+  });
+
+  if (result.length === 0) {
+    const msg = parseErrors.length>0
+      ? 'Nenhuma linha válida encontrada.<br>' + parseErrors.map(e=>`• ${e}`).join('<br>')
+      : 'Nenhuma linha válida encontrada.';
+    showFeedback('error', msg);
+    return;
+  }
+
+  parsedImportData = result;
+  renderPreview(result, parseErrors);
+}
+
+function renderPreview(result, parseErrors) {
+  const wrap  = document.getElementById('preview-wrap');
+  const count = document.getElementById('preview-count');
+  const tbl   = document.getElementById('preview-table');
+
+  count.textContent = `${result.length} linha(s)${parseErrors.length>0?' · ⚠️ '+parseErrors.length+' aviso(s)':''}`;
+
+  tbl.innerHTML = '';
+  // header
+  const thead = document.createElement('thead');
+  thead.innerHTML = `<tr>
+    <th>Pacote</th><th>Tipo</th>
+    ${MONTHS.map(m=>`<th>${m}</th>`).join('')}
+  </tr>`;
+  tbl.appendChild(thead);
+
+  const tbody = document.createElement('tbody');
+  result.forEach(row => {
+    const tr = document.createElement('tr');
+    tr.className = row.type==='plan'?'prev-plan':'prev-real';
+    const typeLabel = row.type==='plan'?'Planejado':'Realizado';
+    tr.innerHTML = `<td>${row.pkgId} · ${row.pkgName}</td><td class="ttype">${typeLabel}</td>`;
+    row.values.forEach((v, i) => {
+      const td = document.createElement('td');
+      if (v === null) {
+        td.className = row.errs.includes(i) ? 'val-err' : '';
+        td.textContent = row.errs.includes(i) ? '⚠️ erro' : '—';
+      } else {
+        td.className = 'val-ok';
+        td.textContent = fmtShort(v);
+        td.title = fmtBRL(v);
+      }
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+  tbl.appendChild(tbody);
+
+  wrap.style.display = 'block';
+
+  if (parseErrors.length > 0) {
+    showFeedback('error', '⚠️ Alguns avisos:<br>' + parseErrors.map(e=>`• ${e}`).join('<br>'));
+  } else {
+    showFeedback('success', `✓ ${result.length} linha(s) prontas para importar.`);
+  }
+}
+
+function confirmImport() {
+  if (!parsedImportData) return;
+  parsedImportData.forEach(row => {
+    if (!appData[row.pkgId]) appData[row.pkgId] = MONTHS.map(()=>({plan:null,real:null}));
+    row.values.forEach((v, mi) => {
+      if (v !== null) appData[row.pkgId][mi][row.type] = v;
+    });
+  });
+  saveData();
+  // refresh manual table if it was rendered
+  renderDataTable();
+  if (currentScreen==='panorama') renderPanorama();
+  cancelPreview();
+  document.getElementById('paste-area').value = '';
+  showFeedback('success', `✅ Importação concluída! ${parsedImportData.length} linha(s) gravadas com sucesso.`);
+  parsedImportData = null;
+}
+
+function cancelPreview() {
+  document.getElementById('preview-wrap').style.display = 'none';
+  parsedImportData = null;
+}
+
+function showFeedback(type, msg) {
+  const fb = document.getElementById('import-feedback');
+  fb.className = 'import-feedback ' + type;
+  fb.innerHTML = msg;
+  fb.style.display = 'block';
+}
+
+function downloadTemplate() {
+  const header = ['Pacote','Tipo',...MONTHS].join(';');
+  const rows = [];
+  PACKAGES.forEach(p => {
+    rows.push([p.id,'Planejado',...MONTHS.map(()=>'0')].join(';'));
+    rows.push([p.id,'Realizado',...MONTHS.map(()=>'0')].join(';'));
+  });
+  const csv = [header, ...rows].join('\r\n');
+  const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'template_stc_gyn.csv';
+  a.click();
 }
 
 /* ── INIT ── */
