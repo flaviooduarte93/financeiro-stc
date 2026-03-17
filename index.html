@@ -220,6 +220,50 @@
   .s-neutral { color: var(--eq-gray); background: rgba(255,255,255,0.07); }
   .card-pct  { font-size: .68rem; color: var(--eq-gray); margin-top: .2rem; }
 
+  /* card detail button */
+  .card-detail-btn {
+    position:absolute; top:.55rem; right:.55rem;
+    background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.15);
+    border-radius:6px; color:var(--eq-gray); font-size:.65rem; font-weight:700;
+    padding:.18rem .45rem; cursor:pointer; transition:all .15s; z-index:5; line-height:1.4;
+    font-family:var(--font-body);
+  }
+  .card-detail-btn:hover { background:rgba(255,255,255,0.2); color:var(--eq-white); }
+
+  /* MODAL */
+  .modal-overlay {
+    display:none; position:fixed; inset:0; z-index:200;
+    background:rgba(0,0,0,0.65); backdrop-filter:blur(6px);
+    align-items:center; justify-content:center; padding:1.5rem;
+  }
+  .modal-overlay.open { display:flex; }
+  .modal-box {
+    background:#0d2060; border:1px solid rgba(255,255,255,0.14);
+    border-radius:18px; padding:1.8rem 2rem; max-width:480px; width:100%;
+    box-shadow:0 32px 80px rgba(0,0,0,0.6); animation:fadeUp .2s ease both;
+    position:relative;
+  }
+  .modal-box h4 { font-family:var(--font-head); font-size:1.05rem; font-weight:800; margin-bottom:.2rem; }
+  .modal-pkg-id { font-size:.72rem; color:var(--eq-orange); font-weight:700; text-transform:uppercase; letter-spacing:.08em; margin-bottom:1rem; }
+  .modal-close {
+    position:absolute; top:1rem; right:1rem;
+    background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12);
+    border-radius:8px; color:var(--eq-gray); font-size:.9rem;
+    width:28px; height:28px; display:flex; align-items:center; justify-content:center;
+    cursor:pointer; transition:all .15s;
+  }
+  .modal-close:hover { background:rgba(239,68,68,0.2); color:#f87171; }
+  .modal-divider { border:none; border-top:1px solid rgba(255,255,255,0.08); margin:.9rem 0; }
+  .modal-row { display:flex; justify-content:space-between; align-items:flex-start; padding:.4rem 0; gap:1rem; }
+  .modal-row-label { font-size:.78rem; color:var(--eq-gray); font-weight:500; }
+  .modal-row-val { font-family:var(--font-head); font-size:.92rem; font-weight:700; text-align:right; }
+  .modal-row-val.orange { color:var(--eq-orange); }
+  .modal-var-box { margin-top:.9rem; padding:.7rem 1rem; border-radius:10px; }
+  .modal-var-box .var-label { font-size:.72rem; text-transform:uppercase; letter-spacing:.07em; color:var(--eq-gray); margin-bottom:.3rem; }
+  .modal-var-box .var-values { font-family:var(--font-head); font-size:1.1rem; font-weight:800; }
+  .modal-badge-row { margin-top:.7rem; }
+  .modal-period { font-size:.75rem; color:var(--eq-gray); margin-top:1rem; text-align:center; }
+
   /* CHART */
   .chart-section { background: rgba(255,255,255,0.04); border: 1px solid var(--card-border); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; }
   .chart-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: .6rem; margin-bottom: 1rem; }
@@ -464,6 +508,30 @@
       </div>
     </div>
 
+  </div>
+</div>
+
+<!-- CARD DETAIL MODAL -->
+<div class="modal-overlay" id="card-modal" onclick="closeModal(event)">
+  <div class="modal-box" id="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-pkg-id" id="modal-pkg-id"></div>
+    <h4 id="modal-pkg-name"></h4>
+    <hr class="modal-divider">
+    <div class="modal-row">
+      <span class="modal-row-label">Planejado</span>
+      <span class="modal-row-val orange" id="modal-plan"></span>
+    </div>
+    <div class="modal-row">
+      <span class="modal-row-label">Realizado</span>
+      <span class="modal-row-val" id="modal-real"></span>
+    </div>
+    <div class="modal-var-box" id="modal-var-box">
+      <div class="var-label">Variação</div>
+      <div class="var-values" id="modal-var-val"></div>
+    </div>
+    <div class="modal-badge-row" id="modal-badge"></div>
+    <div class="modal-period" id="modal-period"></div>
   </div>
 </div>
 
@@ -777,16 +845,20 @@ function renderCards() {
   grid.innerHTML = '';
   const visible = getVisiblePkgs();
 
-  // TOTAL
+  // ── TOTAL CARD ──
   const totMon = monthlyForPkgs(visible.map(p=>p.id));
   const totAgg = aggForFilter(totMon);
   const tSt = getStatus(totAgg.plan, totAgg.real, false);
-  const tCol= SC[tSt];
+  const tCol = SC[tSt];
+  const fn = cardFilter==='card'?'Pacotes CARD':cardFilter==='nocard'?'Pacotes Não CARD':'Todos os Pacotes';
+  const totPct = (totAgg.plan && totAgg.real!=null)
+    ? ((totAgg.real-totAgg.plan)/totAgg.plan*100).toFixed(1) : null;
+
   const tc = document.createElement('div');
   tc.className = 'pkg-card total-card'+(selectedPkg==='total'?' selected':'');
   tc.style.setProperty('--c-accent', tCol);
-  const fn = cardFilter==='card'?'Pacotes CARD':cardFilter==='nocard'?'Pacotes Não CARD':'Todos os Pacotes';
   tc.innerHTML = `
+    <button class="card-detail-btn" title="Ver valores completos">🔍 Detalhes</button>
     <div>
       <div class="card-pkg-id">▣ TOTAL GERAL</div>
       <div class="card-pkg-name">${fn}</div>
@@ -794,43 +866,106 @@ function renderCards() {
     </div>
     <div>
       <div class="card-val-label">Planejado</div>
-      <div class="card-val-num" style="color:var(--eq-orange)" title="${fmtBRL(totAgg.plan)}">${fmtBRL(totAgg.plan)}</div>
+      <div class="card-val-num" style="color:var(--eq-orange)">${fmtShort(totAgg.plan)??'—'}</div>
     </div>
     <div>
       <div class="card-val-label">Realizado</div>
-      <div class="card-val-num" style="color:${tCol}" title="${fmtBRL(totAgg.real)}">${fmtBRL(totAgg.real)}</div>
+      <div class="card-val-num" style="color:${tCol}">${fmtShort(totAgg.real)??'—'}</div>
+      ${totPct!==null?`<div class="card-pct">${totPct>0?'+':''}${totPct}% vs plan.</div>`:''}
     </div>`;
+
+  // detail button click → modal, card click → filter
+  tc.querySelector('.card-detail-btn').addEventListener('click', e => {
+    e.stopPropagation();
+    openModal({
+      id: 'TOTAL', name: fn,
+      plan: totAgg.plan, real: totAgg.real, hib: false
+    });
+  });
   tc.onclick = () => selectCard('total');
   grid.appendChild(tc);
 
-  // PACKAGES
+  // ── PACKAGE CARDS ──
   visible.forEach(p => {
     const mon = monthlyForPkgs([p.id]);
     const agg = aggForFilter(mon);
     const st  = getStatus(agg.plan, agg.real, p.hib);
     const col = SC[st];
-    const pct = (agg.plan && agg.real!=null) ? ((agg.real-agg.plan)/agg.plan*100).toFixed(1) : null;
+    const pct = (agg.plan && agg.real!=null)
+      ? ((agg.real-agg.plan)/agg.plan*100).toFixed(1) : null;
+
     const card = document.createElement('div');
     card.className = 'pkg-card'+(selectedPkg===p.id?' selected':'');
     card.style.setProperty('--c-accent', col);
     card.innerHTML = `
+      <button class="card-detail-btn" title="Ver valores completos">🔍</button>
       <div class="card-pkg-id">Pac. ${p.id}${p.card?' · <span style="color:var(--eq-orange)">CARD</span>':''}${p.hib?' · <span style="color:#60a5fa;font-size:.6rem">RECEITA</span>':''}</div>
       <div class="card-pkg-name">${p.name}</div>
       <div class="card-row">
         <div>
           <div class="card-val-label">Planejado</div>
-          <div class="card-val-num" title="${fmtBRL(agg.plan)}">${fmtBRL(agg.plan)}</div>
+          <div class="card-val-num">${fmtShort(agg.plan)??'—'}</div>
         </div>
         <div>
           <div class="card-val-label">Realizado</div>
-          <div class="card-val-num" style="color:${col}" title="${fmtBRL(agg.real)}">${fmtBRL(agg.real)}</div>
+          <div class="card-val-num" style="color:${col}">${fmtShort(agg.real)??'—'}</div>
         </div>
       </div>
       ${badge(st,p.hib)}
-      ${pct!==null?`<div class="card-pct">${pct>0?'+':''}${pct}% vs planejado</div>`:''}`;
+      ${pct!==null?`<div class="card-pct">${pct>0?'+':''}${pct}% vs plan.</div>`:''}`;
+
+    card.querySelector('.card-detail-btn').addEventListener('click', e => {
+      e.stopPropagation();
+      openModal({ id: `Pacote ${p.id}`, name: p.name, plan: agg.plan, real: agg.real, hib: p.hib });
+    });
     card.onclick = () => selectCard(p.id);
     grid.appendChild(card);
   });
+}
+
+/* ── MODAL ── */
+function openModal({ id, name, plan, real, hib }) {
+  const st  = getStatus(plan, real, hib);
+  const col = SC[st];
+  const diff = (plan!=null && real!=null) ? real - plan : null;
+  const pct  = (plan!=null && real!=null && plan!==0) ? ((real-plan)/plan*100) : null;
+
+  document.getElementById('modal-pkg-id').textContent   = id;
+  document.getElementById('modal-pkg-name').textContent = name;
+  document.getElementById('modal-plan').textContent     = fmtBRL(plan);
+  const realEl = document.getElementById('modal-real');
+  realEl.textContent = fmtBRL(real);
+  realEl.style.color = col;
+
+  const varBox = document.getElementById('modal-var-box');
+  const varVal = document.getElementById('modal-var-val');
+  if (diff !== null) {
+    const sign = diff >= 0 ? '+' : '';
+    varVal.textContent = `${sign}${fmtBRL(diff)}  /  ${sign}${pct.toFixed(1)}%`;
+    varVal.style.color = col;
+    varBox.style.background = col === SC.green ? 'rgba(34,197,94,0.1)'
+      : col === SC.red ? 'rgba(239,68,68,0.1)' : 'rgba(234,179,8,0.1)';
+    varBox.style.border = `1px solid ${col}44`;
+    varBox.style.display = 'block';
+  } else {
+    varBox.style.display = 'none';
+  }
+
+  document.getElementById('modal-badge').innerHTML = badge(st, hib);
+
+  // period label
+  const mLabel = selectedMonths.length === 0 ? 'Acumulado anual'
+    : selectedMonths.length === 1 ? `Mês: ${MONTHS[selectedMonths[0]]}`
+    : `Meses: ${selectedMonths.map(i=>MONTHS[i]).join(', ')}`;
+  document.getElementById('modal-period').textContent = mLabel;
+
+  document.getElementById('card-modal').classList.add('open');
+}
+
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('card-modal')) {
+    document.getElementById('card-modal').classList.remove('open');
+  }
 }
 
 function selectCard(id) { selectedPkg=id; renderCards(); renderChart(); }
@@ -840,10 +975,23 @@ let chartInst = null;
 
 function getProjectionData(pkgIds) {
   const monthly = monthlyForPkgs(pkgIds);
+
+  // lastRealIdx: last month where ANY of the given packages has a real value entered.
+  // We check raw appData to avoid counting zero-defaults as filled.
   let lastRealIdx = -1;
-  monthly.forEach((m,i) => {
-    if (m.real != null && !(m.real === 0 && m.plan == null)) lastRealIdx = i;
+  MONTHS.forEach((_, mi) => {
+    const anyReal = pkgIds.some(id => {
+      const v = appData[id]?.[mi]?.real;
+      return v != null && v !== 0;
+    });
+    // also allow genuine zero if the package had non-zero in prior months
+    const anyRealZero = lastRealIdx >= 0 && pkgIds.some(id => {
+      const v = appData[id]?.[mi]?.real;
+      return v === 0 && appData[id]?.[mi]?.plan != null;
+    });
+    if (anyReal || anyRealZero) lastRealIdx = mi;
   });
+
   const realsWD = monthly.filter((m,i) => i <= lastRealIdx && m.real != null);
   const avgReal = realsWD.length > 0 ? realsWD.reduce((s,m) => s+m.real,0)/realsWD.length : 0;
   let cp=0, cr=0;
@@ -852,7 +1000,7 @@ function getProjectionData(pkgIds) {
     if (i > lastRealIdx || m.real==null) return null;
     cr += m.real; return cr;
   });
-  const baseProj = cumReal[lastRealIdx] ?? 0;
+  const baseProj = lastRealIdx >= 0 ? (cumReal[lastRealIdx] ?? 0) : 0;
   let cpj = baseProj;
   const cumProj = monthly.map((m,i) => {
     if (lastRealIdx < 0) return null;
