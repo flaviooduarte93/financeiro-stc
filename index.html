@@ -1201,29 +1201,42 @@ function renderDRE(pkgIds, hibTotal) {
     return [trP, trR, trV];
   }
 
-  // TOTAL row (always shown)
-  const totalIds = visible.map(p=>p.id);
-  const totalLabel = selectedPkg==='total'
-    ? `<strong style="color:var(--eq-orange)">▣ TOTAL</strong>`
-    : `<strong style="color:var(--eq-orange)">▣ TOTAL</strong>`;
-  buildRows(totalIds, totalLabel, false, true).forEach(r => tbody.appendChild(r));
-
-  // Separator
-  const sep = document.createElement('tr');
-  sep.innerHTML = `<td colspan="${14+2}" style="height:6px;background:rgba(40,86,212,0.15);padding:0"></td>`;
-  tbody.appendChild(sep);
-
-  // Individual package rows
   if (selectedPkg === 'total') {
-    drePackages.forEach((p, pi) => {
+    // ── MODO TOTAL: linha de TOTAL (soma de todos visíveis) + cada pacote expandido ──
+    const totalIds = visible.map(p=>p.id);
+    buildRows(totalIds, `<strong style="color:var(--eq-orange)">▣ TOTAL</strong>`, false, true)
+      .forEach(r => tbody.appendChild(r));
+
+    const sep = document.createElement('tr');
+    sep.innerHTML = `<td colspan="14" style="height:6px;background:rgba(40,86,212,0.15);padding:0"></td>`;
+    tbody.appendChild(sep);
+
+    visible.forEach((p, pi) => {
       const pkgLabel = `<span style="font-size:.72rem;color:var(--eq-orange)">Pac.${p.id}</span><br>${p.name}`;
       buildRows([p.id], pkgLabel, p.hib, false).forEach(r => tbody.appendChild(r));
-      if (pi < drePackages.length-1) {
+      if (pi < visible.length - 1) {
         const s2 = document.createElement('tr');
-        s2.innerHTML = `<td colspan="${14+2}" style="height:3px;background:rgba(255,255,255,0.03);padding:0"></td>`;
+        s2.innerHTML = `<td colspan="14" style="height:3px;background:rgba(255,255,255,0.03);padding:0"></td>`;
         tbody.appendChild(s2);
       }
     });
+
+  } else {
+    // ── MODO PACOTE ESPECÍFICO: linha de TOTAL filtrado + só o pacote selecionado ──
+    const pkg = PACKAGES.find(p => p.id === selectedPkg);
+    const totalIds = visible.map(p=>p.id);
+
+    // Total filtrado (soma dos pacotes visíveis, para contexto)
+    buildRows(totalIds, `<strong style="color:var(--eq-orange)">▣ TOTAL</strong>`, false, true)
+      .forEach(r => tbody.appendChild(r));
+
+    const sep = document.createElement('tr');
+    sep.innerHTML = `<td colspan="14" style="height:6px;background:rgba(40,86,212,0.15);padding:0"></td>`;
+    tbody.appendChild(sep);
+
+    // O pacote selecionado em destaque
+    const pkgLabel = `<span style="font-size:.72rem;color:var(--eq-orange)">Pac.${pkg.id}</span><br><strong>${pkg.name}</strong>`;
+    buildRows([pkg.id], pkgLabel, pkg.hib, false).forEach(r => tbody.appendChild(r));
   }
 
   tbl.appendChild(tbody);
